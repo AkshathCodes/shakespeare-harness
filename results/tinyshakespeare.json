@@ -1,0 +1,675 @@
+{
+  "dataset": {
+    "name": "tinyshakespeare.txt",
+    "sha256": "86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed",
+    "bytes": 1115394,
+    "split_bytes": {
+      "train": 892315,
+      "validation": 111539,
+      "test": 111540
+    }
+  },
+  "python": "3.12.14",
+  "torch": "2.15.0+cpu",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "device": "cpu",
+  "device_name": null,
+  "model_widths": {
+    "proxy": 8,
+    "target": 16
+  },
+  "context": 12,
+  "batch_size": 2,
+  "max_eval_windows": 32,
+  "loss_unit": "bits per byte",
+  "budget": {
+    "proxy_step_cost": 420480,
+    "target_step_cost": 1062144,
+    "proxy_steps": 126,
+    "target_steps": 400,
+    "cap": 1699430400
+  },
+  "repeats": [
+    {
+      "seed": 7,
+      "proxy_trials": [
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.447970444965035,
+          "seconds": 2.6262930000084452,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 4.685283113515194,
+          "seconds": 0.2468786999816075,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "constant"
+          },
+          "validation_loss": 7.066256679445046,
+          "seconds": 0.24031640001339838,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.810666033230819,
+          "seconds": 0.24461260001407936,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "constant"
+          },
+          "validation_loss": 7.993269996889119,
+          "seconds": 0.24635969998780638,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "cosine"
+          },
+          "validation_loss": 7.920484187321565,
+          "seconds": 0.2502833000035025,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 8.02101492605691,
+          "seconds": 0.2524814999778755,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 5.2764659086194605,
+          "seconds": 0.24829079996561632,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        }
+      ],
+      "screened": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "constant"
+            },
+            "validation_loss": 3.899087126805778,
+            "seconds": 0.7992050000466406,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "cosine"
+            },
+            "validation_loss": 3.8323375643182067,
+            "seconds": 0.7998501000110991,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.081077792087595,
+            "seconds": 0.796580400026869,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 3.8323375643182067,
+          "seconds": 0.7998501000110991,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1698416640,
+        "seconds": 6.75115150003694,
+        "held_out_loss": 3.687638241188274
+      },
+      "direct": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "constant"
+            },
+            "validation_loss": 3.899087126805778,
+            "seconds": 0.7919598000007682,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "cosine"
+            },
+            "validation_loss": 3.8323375643182067,
+            "seconds": 0.7986332000000402,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.001,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.538216621178785,
+            "seconds": 0.800362900015898,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.081077792087595,
+            "seconds": 0.8024137999746017,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 3.8323375643182067,
+          "seconds": 0.7986332000000402,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1699430400,
+        "seconds": 3.193369699991308,
+        "held_out_loss": 3.687638241188274
+      },
+      "direct_subset_rank_agreement": {
+        "agree": 5,
+        "disagree": 1,
+        "ties": 0
+      }
+    },
+    {
+      "seed": 19,
+      "proxy_trials": [
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 5.196501199239591,
+          "seconds": 0.23416009999345988,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "constant"
+          },
+          "validation_loss": 6.242633140324262,
+          "seconds": 0.24962909996975213,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "cosine"
+          },
+          "validation_loss": 7.847392248635475,
+          "seconds": 0.24820999999064952,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 8.003620600748647,
+          "seconds": 0.2453050000476651,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 4.678644927157191,
+          "seconds": 0.24948050000239164,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.845288204641313,
+          "seconds": 0.24086479999823496,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.51172269381337,
+          "seconds": 0.24621390004176646,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "constant"
+          },
+          "validation_loss": 7.968699179525651,
+          "seconds": 0.24623129999963567,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        }
+      ],
+      "screened": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "constant"
+            },
+            "validation_loss": 3.9631338099523896,
+            "seconds": 0.8005974999978207,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "cosine"
+            },
+            "validation_loss": 3.8100338222584123,
+            "seconds": 0.7940290000406094,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.081222945444924,
+            "seconds": 0.8095151000306942,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 3.8100338222584123,
+          "seconds": 0.7940290000406094,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1698416640,
+        "seconds": 4.36423630011268,
+        "held_out_loss": 3.593926614559638
+      },
+      "direct": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "cosine"
+            },
+            "validation_loss": 4.225892687558908,
+            "seconds": 0.7986616000416689,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.001,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.483704656196008,
+            "seconds": 0.7988670999766327,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.001,
+              "schedule": "cosine"
+            },
+            "validation_loss": 4.671748766822894,
+            "seconds": 0.7874875999987125,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.0003,
+              "schedule": "cosine"
+            },
+            "validation_loss": 5.802219280064179,
+            "seconds": 0.8011797000071965,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 4.225892687558908,
+          "seconds": 0.7986616000416689,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1699430400,
+        "seconds": 3.1861960000242107,
+        "held_out_loss": 4.10258835016161
+      },
+      "direct_subset_rank_agreement": {
+        "agree": 6,
+        "disagree": 0,
+        "ties": 0
+      }
+    },
+    {
+      "seed": 41,
+      "proxy_trials": [
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "constant"
+          },
+          "validation_loss": 7.899903367458115,
+          "seconds": 0.2558969000237994,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.749845400649092,
+          "seconds": 0.2482756999670528,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 4.631614207486946,
+          "seconds": 0.2473378000431694,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "cosine"
+          },
+          "validation_loss": 7.6534701149674,
+          "seconds": 0.24495899997418746,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 4.978015471479384,
+          "seconds": 0.24302350002108142,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.0003,
+            "schedule": "cosine"
+          },
+          "validation_loss": 7.952288594980322,
+          "seconds": 0.24229960003867745,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.001,
+            "schedule": "constant"
+          },
+          "validation_loss": 5.530835128551589,
+          "seconds": 0.24667500000214204,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        },
+        {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "constant"
+          },
+          "validation_loss": 4.504986133379074,
+          "seconds": 0.25372219999553636,
+          "peak_cuda_mib": null,
+          "steps": 126,
+          "estimated_flops": 52980480
+        }
+      ],
+      "screened": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "constant"
+            },
+            "validation_loss": 3.97887882163888,
+            "seconds": 0.7988318999996409,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "cosine"
+            },
+            "validation_loss": 3.770486067727208,
+            "seconds": 0.7973584000137635,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.04296506079519,
+            "seconds": 0.800013999978546,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 3.770486067727208,
+          "seconds": 0.7973584000137635,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1698416640,
+        "seconds": 4.378394000057597,
+        "held_out_loss": 3.598201415329484
+      },
+      "direct": {
+        "trials": [
+          {
+            "recipe": {
+              "learning_rate": 0.0003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.8162059383804126,
+            "seconds": 0.8218320999876596,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.003,
+              "schedule": "constant"
+            },
+            "validation_loss": 4.04296506079519,
+            "seconds": 0.8483959000441246,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.01,
+              "schedule": "cosine"
+            },
+            "validation_loss": 3.770486067727208,
+            "seconds": 0.8336785000283271,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          },
+          {
+            "recipe": {
+              "learning_rate": 0.001,
+              "schedule": "cosine"
+            },
+            "validation_loss": 4.654614479282734,
+            "seconds": 0.8021625999826938,
+            "peak_cuda_mib": null,
+            "steps": 400,
+            "estimated_flops": 424857600
+          }
+        ],
+        "winner": {
+          "recipe": {
+            "learning_rate": 0.01,
+            "schedule": "cosine"
+          },
+          "validation_loss": 3.770486067727208,
+          "seconds": 0.8336785000283271,
+          "peak_cuda_mib": null,
+          "steps": 400,
+          "estimated_flops": 424857600
+        },
+        "estimated_flops": 1699430400,
+        "seconds": 3.306069100042805,
+        "held_out_loss": 3.598201415329484
+      },
+      "direct_subset_rank_agreement": {
+        "agree": 6,
+        "disagree": 0,
+        "ties": 0
+      }
+    }
+  ],
+  "summary": {
+    "paired_deltas": [
+      0.0,
+      -0.5086617356019718,
+      0.0
+    ],
+    "mean_delta": -0.16955391186732394
+  }
+}
