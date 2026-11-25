@@ -11,6 +11,15 @@ class Corpus:
     test: bytes
     sha256: str
 
+    def metadata(self, name):
+        split_bytes = {
+            "train": len(self.train), "validation": len(self.validation), "test": len(self.test),
+        }
+        return {
+            "name": name, "sha256": self.sha256,
+            "bytes": sum(split_bytes.values()), "split_bytes": split_bytes,
+        }
+
 
 def load_corpus(path, context):
     raw = path.read_bytes()

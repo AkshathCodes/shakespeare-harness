@@ -20,6 +20,13 @@ RECIPES = tuple(
 )
 DIRECT_TRIALS = 4
 PROMOTIONS = 3
+WIDTHS = {"proxy": 8, "target": 16}
+CONTEXT = 12
+BATCH_SIZE = 2
+EVAL_WINDOWS = 32
+DEFAULT_TARGET_STEPS = 400
+DEFAULT_SEEDS = (7, 19, 41)
+LOSS_UNIT = "bits per byte"
 
 
 @dataclass(frozen=True)
@@ -47,6 +54,29 @@ def plan_budget(proxy_step_cost, target_step_cost, target_steps):
     if proxy_steps < 1:
         raise ValueError("Training budget gives zero proxy steps. Increase --target-steps.")
     return Budget(proxy_step_cost, target_step_cost, proxy_steps, target_steps)
+
+
+def estimated_step_flops(width, context, batch_size):
+    """Count forward/backward matmul FLOPs, with two FLOPs per multiply-add."""
+    projections = context * (12 * width**2 + width * 256)
+    causal_pairs = context * (context + 1) // 2
+    attention = 2 * causal_pairs * width
+    return 6 * batch_size * (projections + attention)
+
+
+def experiment_budget(widths, target_steps):
+    return plan_budget(
+        estimated_step_flops(widths["proxy"], CONTEXT, BATCH_SIZE),
+        estimated_step_flops(widths["target"], CONTEXT, BATCH_SIZE),
+        target_steps,
+    )
+
+
+def validate_seeds(seeds):
+    if len(set(seeds)) != len(seeds):
+        raise ValueError("Use distinct seeds for each repeat.")
+    if any(not 0 <= seed < 2**63 for seed in seeds):
+        raise ValueError("Seeds must be between 0 and 2**63 - 1.")
 
 
 @dataclass(frozen=True)

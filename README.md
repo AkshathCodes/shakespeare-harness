@@ -1,4 +1,4 @@
-# Training Transfer Harness
+# Shakespeare Harness
 
 **Can cheap experiments on a tiny transformer help pick better training settings for a larger transformer under the same compute budget?**
 
@@ -13,7 +13,10 @@ python -m venv .venv
 .venv/Scripts/python.exe -m pip install --index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 New-Item -ItemType Directory -Force data | Out-Null
 curl.exe -fL https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -o data/tinyshakespeare.txt
-.venv/Scripts/python.exe run.py data/tinyshakespeare.txt --output runs/tinyshakespeare.json
+.venv/Scripts/python.exe -m harness doctor
+.venv/Scripts/python.exe -m harness plan data/tinyshakespeare.txt
+.venv/Scripts/python.exe -m harness run data/tinyshakespeare.txt --output runs/tinyshakespeare.json
+.venv/Scripts/python.exe -m harness report runs/tinyshakespeare.json
 ```
 
 The default run uses 400 training steps per target trial and seeds 7, 19, and 41. The corpus SHA-256 for the reference run is `86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed`. [char-rnn Tiny Shakespeare corpus](https://github.com/karpathy/char-rnn/tree/master/data/tinyshakespeare)
@@ -23,15 +26,30 @@ Use `.venv/bin/python` for a virtual environment on Linux or macOS and `mkdir -p
 For a quick check using one seed, or to run the tests:
 
 ```powershell
-.venv/Scripts/python.exe run.py data/tinyshakespeare.txt --target-steps 4 --seeds 7 --output runs/smoke.json
+.venv/Scripts/python.exe -m harness run data/tinyshakespeare.txt --target-steps 4 --seeds 7 --output runs/smoke.json
 .venv/Scripts/python.exe -m unittest discover -s tests -v
 ```
 
 The harness accepts any local text file. It writes the file fingerprint, model and budget settings, per-trial validation loss and runtime, the selected recipes, and paired held-out losses to JSON. CUDA runs also record peak PyTorch tensor allocations above the pre-trial baseline in MiB.
 
+## Terminal commands
+
+Run from the repository directory. Each command has its own help, for example `python -m harness run --help`.
+
+| Command | Use it to |
+| --- | --- |
+| `python -m harness doctor` | Check that PyTorch and the requested device can start. |
+| `python -m harness plan CORPUS` | Preview the corpus split, trial counts, and estimated compute per seed. |
+| `python -m harness run CORPUS` | Run training and write the full report. |
+| `python -m harness report REPORT` | Read saved results, including the published reference JSON. |
+
+`plan` and `run` share `--proxy-width`, `--target-width`, `--target-steps`, `--seeds`, and `--device`. The new run command writes to `runs/results.json` by default. Use `--output FILE` to choose a destination and `--overwrite` to replace an existing report after successful training. Atomic publication without overwrite requires a filesystem that supports hard links, such as NTFS.
+
+Help, `plan`, and `report` work without PyTorch. The original `python run.py CORPUS ...` entry point is still available. [CLI requirements](docs/cli-requirements.md)
+
 ## How the comparison works
 
-Both models use one attention head, one transformer block, a 12-byte context, and a batch size of two. The proxy has width 8 and 4,960 parameters. The target has width 16 and 11,456 parameters. The search space is four learning rates crossed with constant and cosine schedules.
+Both models use one attention head, one transformer block, a 12-byte context, and a batch size of two. At the default widths, the proxy has width 8 and 4,960 parameters, and the target has width 16 and 11,456 parameters. The search space is four learning rates crossed with constant and cosine schedules.
 
 | Strategy | Where the budget goes |
 | --- | --- |

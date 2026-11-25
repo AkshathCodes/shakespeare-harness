@@ -3,6 +3,8 @@
 from torch import nn
 from torch.nn import functional as F
 
+from experiment import estimated_step_flops as estimated_step_flops
+
 
 class ByteTransformer(nn.Module):
     def __init__(self, width, context, vocab_size=256):
@@ -24,11 +26,3 @@ class ByteTransformer(nn.Module):
         x = x + self.attention_out(attended.squeeze(1))
         x = x + self.contract(self.expand(x).tanh())
         return self.logits(x)
-
-
-def estimated_step_flops(width, context, batch_size):
-    """Count forward/backward matmul FLOPs, with two FLOPs per multiply-add."""
-    projections = context * (12 * width**2 + width * 256)
-    causal_pairs = context * (context + 1) // 2
-    attention = 2 * causal_pairs * width
-    return 6 * batch_size * (projections + attention)
