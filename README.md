@@ -2,7 +2,7 @@
 
 **Can cheap experiments on a tiny transformer help pick better training settings for a larger transformer under the same compute budget?**
 
-This command-line harness trains two causal byte-level transformers from scratch in PyTorch and compares proxy screening with direct random search. It runs on CPU and accepts CUDA as an option.
+Shakespeare Harness runs a controlled training experiment on any local text file. It trains two small PyTorch transformers to predict the next byte and measures whether screening training settings on the smaller model improves the larger model's held-out loss. It runs on CPU and accepts CUDA as an option.
 
 ## Run the experiment
 
@@ -12,7 +12,7 @@ The reference run uses Python 3.12. From this directory in PowerShell, create a 
 python -m venv .venv
 .venv/Scripts/python.exe -m pip install --index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 New-Item -ItemType Directory -Force data | Out-Null
-curl.exe -fL https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt -o data/tinyshakespeare.txt
+curl.exe -fL https://raw.githubusercontent.com/karpathy/char-rnn/370cbcd448eb7daf32f21a6be560b70e0b33c4e3/data/tinyshakespeare/input.txt -o data/tinyshakespeare.txt
 .venv/Scripts/python.exe -m harness doctor
 .venv/Scripts/python.exe -m harness plan data/tinyshakespeare.txt
 .venv/Scripts/python.exe -m harness run data/tinyshakespeare.txt --output runs/tinyshakespeare.json
@@ -74,7 +74,37 @@ CPU run with Python 3.12 and PyTorch 2.15.0. Each screened trial ran for 126 ste
 
 Screening tied on two seeds and improved held-out loss by 0.5087 bits per byte on seed 19, for a mean difference of −0.1696 bits per byte. The rankings agreed on 17 of 18 paired comparisons in the direct-search subsets. These measurements cover one corpus, two small models, and three seeds. A wider study would be needed to estimate transfer at larger scales. Trial timings are descriptive because the screened strategy always runs first. [Full benchmark report](results/tinyshakespeare.json)
 
+## Expanded benchmark
+
+The follow-up used the same eight recipes, widths of 8 and 16, and 400 target steps. We chose seeds 100–119 in advance and ran all 20 on each corpus for 600 training trials total. Screening used 1,698,416,640 estimated FLOPs per seed, with the proxy trials included. Direct search used 1,699,430,400.
+
+| Corpus | Screening wins / ties / losses | Mean held-out delta (bits per byte) | Report |
+| --- | ---: | ---: | --- |
+| Tiny Shakespeare | 12 / 8 / 0 | −0.1577 | [JSON](results/tinyshakespeare-20seeds.json) |
+| Alice in Wonderland | 12 / 8 / 0 | −0.1308 | [JSON](results/alice-in-wonderland-20seeds.json) |
+
+The delta is screened minus direct, so a negative value favors screening. Proxy and target rankings agreed on 117 of the 120 recipe pairs sampled by direct search on each corpus. These results apply to the tested widths, recipe set, and literary corpora. Repeats reuse each corpus's held-out split. The comparison measures model quality under an estimated compute cap, so the table does not establish a wall-clock speedup.
+
+To reproduce the follow-up after setting up the environment and downloading Tiny Shakespeare above, download Alice in Wonderland from the pinned GITenberg mirror. The extraction below keeps the bytes after the header and before the closing Gutenberg notice, strips outer whitespace, and appends a newline. The prepared Alice corpus SHA-256 is `76f5d0a8859d750b43c83abf85a60aaf63e2b57343db20ed97db433a204ffb6f`. [Project Gutenberg edition](https://www.gutenberg.org/ebooks/11) · [GITenberg mirror](https://github.com/GITenberg/Alice-s-Adventures-in-Wonderland_11)
+
+```powershell
+curl.exe -fL https://raw.githubusercontent.com/GITenberg/Alice-s-Adventures-in-Wonderland_11/9276e2df21ea7a8b4b717c7394bbb66d3916ec00/11.txt -o data/alice-gutenberg.txt
+@'
+from pathlib import Path
+
+lines = Path("data/alice-gutenberg.txt").read_bytes().splitlines(keepends=True)
+start = next(i for i, line in enumerate(lines) if line.startswith(b"*** START OF "))
+end = next(i for i, line in enumerate(lines) if line.startswith(b"End of Project Gutenberg"))
+Path("data/alice-in-wonderland.txt").write_bytes(b"".join(lines[start + 1:end]).strip() + b"\n")
+'@ | & .venv/Scripts/python.exe -
+
+$studySeeds = 100..119
+.venv/Scripts/python.exe -m harness run data/tinyshakespeare.txt --proxy-width 8 --target-width 16 --target-steps 400 --seeds @studySeeds --device cpu --output runs/tinyshakespeare-20seeds.json
+.venv/Scripts/python.exe -m harness run data/alice-in-wonderland.txt --proxy-width 8 --target-width 16 --target-steps 400 --seeds @studySeeds --device cpu --output runs/alice-in-wonderland-20seeds.json
+```
+
 ## Related work
 
 - RE-Bench includes a task that uses inexpensive training experiments to predict better compute allocation at a larger budget. [METR RE-Bench](https://github.com/METR/RE-Bench/blob/main/README.md#predict-optimal-hyperparameters-through-scaling-law)
 - Karpathy's `autoresearch` uses an agent to propose and test changes to small language-model training. [autoresearch](https://github.com/karpathy/autoresearch)
+- μTransfer studies how training settings tuned on smaller models can carry to much larger models under a particular parameterization. [Tensor Programs V](https://arxiv.org/abs/2203.03466)
